@@ -1,0 +1,163 @@
+/* 画面全体の基本デザイン */
+body {
+  margin: 0;
+  min-width: 320px;
+  background-color: #d9c49a;
+  background-image:
+    radial-gradient(circle at 20% 20%, rgba(255, 250, 220, 0.7), transparent 35%),
+    radial-gradient(circle at 80% 70%, rgba(120, 80, 40, 0.12), transparent 40%);
+  color: #4a2d1b;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", serif;
+}
+
+#root {
+  min-height: 100vh;
+  padding: 40px 20px;
+  box-sizing: border-box;
+}
+
+/* Home と Result に共通する羊皮紙風の枠 */
+.home-page,
+.result-page {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 36px;
+  background: #f8edcf;
+  border: 2px solid #88613d;
+  border-radius: 12px;
+  box-shadow: 0 8px 20px rgba(70, 40, 20, 0.3);
+  box-sizing: border-box;
+}
+
+h2 {
+  margin-top: 0;
+  color: #5a321b;
+  text-align: center;
+  font-family: "Yu Mincho", "Hiragino Mincho ProN", "MS PMincho", serif;
+  font-size: 2rem;
+  font-weight: bold;
+  letter-spacing: 0.12em;
+  text-shadow: 1px 1px 0 #e8d7ad;
+}
+
+h2::after {
+  content: "";
+  display: block;
+  width: 120px;
+  margin: 12px auto 28px;
+  border-bottom: 2px solid #9a7045;
+}
+
+/* Home の2カラム設定 */
+.home-page {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 40px;
+}
+
+.home-page .title {
+  grid-column: 1 / -1;
+}
+
+.left {
+  padding-right: 40px;
+  border-right: 1px solid #b28b60;
+  line-height: 1.8;
+}
+
+.right {
+  padding-top: 8px;
+}
+
+.left img,
+.job-image {
+  display: block;
+  width: min(100%, 420px);
+  margin: 24px auto 0;
+  border: 4px double #8a633e;
+  border-radius: 8px;
+}
+
+/* フォーム部品 */
+label {
+  font-weight: bold;
+}
+
+input {
+  width: 100%;
+  margin-top: 8px;
+  padding: 10px;
+  color: #4a2d1b;
+  font: inherit;
+  background: #fff9e8;
+  border: 1px solid #98714a;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+button {
+  margin-right: 8px;
+  padding: 8px 14px;
+  color: #fff6df;
+  font: inherit;
+  font-weight: bold;
+  background: #754522;
+  border: 1px solid #4b2b16;
+  border-radius: 4px;
+  cursor: pointer;
+}
+
+button:hover {
+  background: #936037;
+}
+
+button:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+.status-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.status-row button {
+  width: 52px;
+  margin-right: 0;
+}
+
+.status-row span {
+  min-width: 110px;
+  font-variant-numeric: tabular-nums;
+}
+
+/* Result ページ */
+.result-page {
+  max-width: 650px;
+  text-align: center;
+  line-height: 1.8;
+}
+
+/* スマホでは縦1列にする */
+@media (max-width: 700px) {
+  #root {
+    padding: 20px 12px;
+  }
+
+  .home-page,
+  .result-page {
+    padding: 24px 18px;
+  }
+
+  .home-page {
+    grid-template-columns: 1fr;
+    gap: 24px;
+  }
+
+  .left {
+    padding-right: 0;
+    padding-bottom: 24px;
+    border-right: none;
+    border-bottom: 1px solid #b28b60;
+  }
+}

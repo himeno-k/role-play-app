@@ -1,0 +1,103 @@
+import { useEffect, useState } from 'react'
+import './App.css'
+
+function App() {
+  const [attack, setAttack] = useState(0)
+  const [defence, setDefence] = useState(0)
+  const [magic, setMagic] = useState(0)
+  const [holy, setHoly] = useState(0)
+  const [name, setName] = useState('')
+  const [job, setJob] = useState(null)
+  const [jobs, setJobs] = useState([])
+
+  const gift = 100 - (attack + defence + magic + holy)
+
+  useEffect(() => {
+    fetch('/jobs.csv')
+      .then((response) => response.text())
+      .then((text) => {
+        const [, ...rows] = text.trim().split('\n')
+
+        const jobData = rows.map((row) => {
+          const [name, scenario] = row.trim().split(',')
+          return { name, scenario }
+        })
+
+        setJobs(jobData)
+      })
+      .catch(() => {
+        alert('職業データの読み込みに失敗しました。')
+      })
+  }, [])
+
+  const getJobName = () => {
+    if (holy >= 30 && attack >= 30) return '勇者'
+    if (magic >= 30) return '魔法使い'
+    return '村人'
+  }
+
+  const decideJob = () => {
+    const jobName = getJobName()
+    const selectedJob = jobs.find((item) => item.name === jobName)
+
+    setJob(selectedJob ?? {
+      name: jobName,
+      scenario: 'シナリオが見つかりません。'
+    })
+  }
+
+  return (
+    <section>
+      <h2 className="title">異世界転生アプリ</h2>
+
+      <label htmlFor="name">名前: </label>
+      <input
+        id="name"
+        type="text"
+        value={name}
+        onChange={(e) => setName(e.target.value)}
+        placeholder="お名前を教えてください"
+      />
+
+      <p>パラメータ {gift}/100</p>
+
+      <p>
+        <button onClick={() => gift >= 10 && setAttack(attack + 10)}>+10</button>
+        <button onClick={() => setAttack(Math.max(0, attack - 10))}>-10</button>
+        攻撃力: {attack}
+      </p>
+
+      <p>
+        <button onClick={() => gift >= 10 && setDefence(defence + 10)}>+10</button>
+        <button onClick={() => setDefence(Math.max(0, defence - 10))}>-10</button>
+        防御力: {defence}
+      </p>
+
+      <p>
+        <button onClick={() => gift >= 10 && setMagic(magic + 10)}>+10</button>
+        <button onClick={() => setMagic(Math.max(0, magic - 10))}>-10</button>
+        魔法力: {magic}
+      </p>
+
+      <p>
+        <button onClick={() => gift >= 10 && setHoly(holy + 10)}>+10</button>
+        <button onClick={() => setHoly(Math.max(0, holy - 10))}>-10</button>
+        清き心: {holy}
+      </p>
+
+      <button onClick={decideJob} disabled={jobs.length === 0}>
+        決定
+      </button>
+
+      {job && (
+        <div>
+          <h3>{name}さんの転生結果</h3>
+          <p>職業：{job.name}</p>
+          <p>シナリオ：{job.scenario}</p>
+        </div>
+      )}
+    </section>
+  )
+}
+
+export default App
